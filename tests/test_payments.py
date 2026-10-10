@@ -22,3 +22,14 @@ def test_refund_returns_everything():
     payments.charge_customer("c1", 500)
     assert payments.refund("c1") == 500
     assert payments.refund("c1") == 0
+
+
+def test_refund_partial_reduces_balance():
+    payments.charge_customer("c1", 500)
+    assert payments.refund_partial("c1", 200) == 300
+
+
+def test_refund_partial_rejects_more_than_charged():
+    payments.charge_customer("c1", 500)
+    with pytest.raises(payments.PaymentError):
+        payments.refund_partial("c1", 900)
