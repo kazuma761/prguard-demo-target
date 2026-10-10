@@ -17,4 +17,5 @@ def charge_customer(customer_id: str, amount_cents: int) -> int:
 
 def refund(customer_id: str) -> int:
     """Refund everything a customer was charged and return the refunded amount."""
-    return _BALANCES.pop(customer_id, 0)
+    _BALANCES[customer_id] = 0
+    return _BALANCES[customer_id]
