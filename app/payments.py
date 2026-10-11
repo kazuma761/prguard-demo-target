@@ -18,3 +18,11 @@ def charge_customer(customer_id: str, amount_cents: int) -> int:
 def refund(customer_id: str) -> int:
     """Refund everything a customer was charged and return the refunded amount."""
     return _BALANCES.pop(customer_id, 0)
+
+
+def refund_partial(customer_id: str, amount_cents: int) -> int:
+    balance = _BALANCES.get(customer_id, 0)
+    if amount_cents > balance:
+        raise PaymentError("cannot refund more than was charged")
+    _BALANCES[customer_id] = balance - amount_cents
+    return _BALANCES[customer_id]
